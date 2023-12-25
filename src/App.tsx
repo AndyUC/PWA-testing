@@ -21,7 +21,7 @@ function App() {
               // Đăng ký sự kiện push với service worker
                    await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array("BPnBnQ3-OJ3fwA51Ispz7srlLRefQdKQipkjA4fnzYJnIim4Wc0LHF3-Z-KafgK_XxrO-8eI6rvpbvQ7h12qreo") })
                    .then(async subscription=>{
-                  if (!subscription) {
+                  if (!subscription) {  
                     window.alert("no subscription")
                   } else {
                     console.log(subscription)
