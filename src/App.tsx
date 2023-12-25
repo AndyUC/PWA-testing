@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import webpush from "web-push"
 import axios from 'axios';
-import {urlBase64ToUint8Array} from "./base64"
+import { urlBase64ToUint8Array } from "./base64"
 
 function App() {
   const handleClick = async () => {
@@ -19,20 +19,21 @@ function App() {
 
             navigator.serviceWorker.ready.then(async function (registration) {
               // Đăng ký sự kiện push với service worker
-                   await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array("BPnBnQ3-OJ3fwA51Ispz7srlLRefQdKQipkjA4fnzYJnIim4Wc0LHF3-Z-KafgK_XxrO-8eI6rvpbvQ7h12qreo") })
-                   .then(async subscription=>{
-                  if (!subscription) {  
+              await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array("BPnBnQ3-OJ3fwA51Ispz7srlLRefQdKQipkjA4fnzYJnIim4Wc0LHF3-Z-KafgK_XxrO-8eI6rvpbvQ7h12qreo") })
+                .then(async subscription=>{
+                  if (!subscription) {
                     window.alert("no subscription")
                   } else {
+                    console.log(Object.getOwnPropertyNames(subscription).length);
                     console.log(subscription)
                     const dataToSend = { subscription: subscription }
                     localStorage.setItem("subscription", JSON.stringify(dataToSend))
                     await client.post('/api/v1/push', {
-                      subscription: subscription
-                  }).catch(e=>console.log)
-                }
-              }).catch(e=>console.error('Lỗi khi đăng ký push:', e)) 
-                }
+                      subscription: {subscription:subscription}
+                    }).catch(e=>console.log)
+                  }
+                }).catch(e=>console.error('Lỗi khi đăng ký push:', e))
+            }
             ).catch((error) => console.log(error));
           }
         });
@@ -43,10 +44,10 @@ function App() {
       console.log("subcription", subscription)
       await client.post('/api/v1/push', {
         subscription: subscription
-    })
+      })
 
     }
-    
+
   }
 
   return (
